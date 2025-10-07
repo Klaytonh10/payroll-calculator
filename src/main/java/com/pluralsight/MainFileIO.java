@@ -1,20 +1,36 @@
 package com.pluralsight;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.Scanner;
 
 public class MainFileIO {
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
 
-        System.out.print("Please enter your name: ");
-        String name = scanner.nextLine();
+        try {
+            FileReader fileReader = new FileReader("src/main/resources/employees.csv");
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
 
-        System.out.print("Hours worked this week: ");
-        String hoursWorked = scanner.nextLine();
+            bufferedReader.readLine();
 
-        System.out.print("Pay rate: ");
-        String payRate = scanner.nextLine();
+            String input;
 
-        System.out.printf("Hello %s, your gross pay is $%.2f!", name, Double.parseDouble(hoursWorked) * Double.parseDouble(payRate));
+            // id | name | hours-worked | pay-rate
+            while((input = bufferedReader.readLine()) != null) {
+                String[] sections = input.split("\\|");
+                System.out.println(sections);
+                Employee employee = new Employee(Integer.parseInt(sections[0]), sections[1], Double.parseDouble(sections[2]), Double.parseDouble(sections[3]));
+                System.out.printf("Employee named %s made a measly %f", employee.getName(), employee.calculateGrossPay());
+            }
+
+            bufferedReader.close();
+
+        } catch (FileNotFoundException e) {
+            System.err.println("Couldn't find the file: " + e);
+        } catch (IOException e) {
+            System.err.println("IO except issue");
+        }
     }
 }
