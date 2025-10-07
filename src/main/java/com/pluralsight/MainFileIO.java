@@ -20,9 +20,8 @@ public class MainFileIO {
             // id | name | hours-worked | pay-rate
             while((input = bufferedReader.readLine()) != null) {
                 String[] sections = input.split("\\|");
-                System.out.println(sections);
                 Employee employee = new Employee(Integer.parseInt(sections[0]), sections[1], Double.parseDouble(sections[2]), Double.parseDouble(sections[3]));
-                System.out.printf("Employee named %s made a measly %f", employee.getName(), employee.calculateGrossPay());
+                System.out.printf("Employee named %s made a measly $%.2f\n", employee.getName(), employee.calculateGrossPay());
             }
 
             bufferedReader.close();
